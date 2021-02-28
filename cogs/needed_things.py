@@ -6,6 +6,7 @@ import asyncio
 import typing
 import aiohttp
 from htmllaundry import strip_markup
+import random
 
 class Needed_things(commands.Cog):
     def __init__(self,client):
@@ -342,6 +343,16 @@ class Needed_things(commands.Cog):
                 #AIzaSyD-Sr0YQc0k3_mKMMcLVmmbaeZTD7jfZcs
                 link=items[0]['id']['videoId']
                 await ctx.send(f"https://youtube.com/watch?v={link}")
+                cs.close()
+    @commands.command(aliases=["bored"])
+    async def bored_cmd(self,ctx):
+        list_random=["education", "recreational", "social", "diy", "charity", "cooking", "relaxation", "music", "busywork"]
+        async with aiohttp.ClientSession() as cs:
+            async with cs.get(f"http://www.boredapi.com/api/activity/?type={random.choice(list_random)}") as response:
+                responsed=await response.json()
+                await ctx.send(responsed['activity'])
+                cs.close()
+
 def setup(client):
     client.add_cog(Needed_things(client))
 #End
