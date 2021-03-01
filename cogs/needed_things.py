@@ -155,7 +155,7 @@ class Needed_things(commands.Cog):
     @vote_cmd.error
     async def vote_cmd_error(self,ctx,error):
         if isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send("Usage:\nPi Vote 15(optional) argument 1,argument 2(required)")
+            await ctx.send("Usage:\npy/ Vote 15(optional) argument 1,argument 2(required)")
         else:
             raise error
     @commands.command(aliases=["quote"])
