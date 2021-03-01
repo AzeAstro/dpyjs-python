@@ -340,7 +340,6 @@ class Needed_things(commands.Cog):
             async with cs.get(f"https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q={search_keyword}&key={youtube_api_key}}") as response:
                 responsed=await response.json()
                 items=responsed['items']
-                #AIzaSyD-Sr0YQc0k3_mKMMcLVmmbaeZTD7jfZcs
                 link=items[0]['id']['videoId']
                 await ctx.send(f"https://youtube.com/watch?v={link}")
                 cs.close()
