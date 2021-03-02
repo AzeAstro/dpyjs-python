@@ -9,8 +9,8 @@ class Memeclass(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command(aliases=["meme","Meme"])
-    async def meme_cmd(self,ctx):
+    @commands.command()
+    async def meme(self,ctx):
         async with aiohttp.ClientSession() as cs:
             async with cs.get('https://www.reddit.com/r/memes.json') as r:
                 res = await r.json()
@@ -24,7 +24,7 @@ class Memeclass(commands.Cog):
                 embed_obj.set_image(url=img_url)
                 await ctx.send(embed=embed_obj)
 
-    @commands.command(aliases=["animeme","Animeme"])
+    @commands.command()
     async def animeme_cmd(self,ctx):
         async with aiohttp.ClientSession() as cs:
             async with cs.get('https://www.reddit.com/r/animemes.json') as r:
@@ -39,8 +39,8 @@ class Memeclass(commands.Cog):
                 embed_obj.set_image(url=img_url)
                 await ctx.send(embed=embed_obj)
     
-    @commands.command(aliases=["cursed","Cursed"])
-    async def cursed_cmd(self,ctx):
+    @commands.command()
+    async def cursed(self,ctx):
         async with aiohttp.ClientSession() as cs:
             async with cs.get('https://www.reddit.com/r/cursedcursedcomments.json') as r:
                 res = await r.json()

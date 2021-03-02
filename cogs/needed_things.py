@@ -12,8 +12,8 @@ class Needed_things(commands.Cog):
     def __init__(self,client):
         self.client=client
     
-    @commands.command(aliases=["avatar"])
-    async def avatar_cmd(self,ctx,user:discord.Member):
+    @commands.command()
+    async def avatar(self,ctx,user:discord.Member):
         async with ctx.typing():
             embed_obj=discord.Embed(colour=discord.Colour.dark_purple())
             embed_obj.title=f"{user.display_name}'s avatar"
@@ -33,8 +33,8 @@ class Needed_things(commands.Cog):
         else:
             raise error
 
-    @commands.command(aliases=["userinfo"])
-    async def userinfo_cmd(self,ctx,user:discord.Member):
+    @commands.command()
+    async def userinfo(self,ctx,user:discord.Member):
         async with ctx.typing():
             if user.nick==None:
                 user_nick=user.display_name
@@ -90,8 +90,8 @@ class Needed_things(commands.Cog):
             await ctx.send(embed=embed_obj)
         else:
             raise error
-    @commands.command(aliases=["serverinfo"])
-    async def serverinfo_cmd(self,ctx):
+    @commands.command()
+    async def serverinfo(self,ctx):
         async with ctx.typing():
             owner=self.client.get_user(ctx.guild.owner_id)
             embed_obj=discord.Embed(colour=discord.Colour.red())
@@ -110,8 +110,8 @@ class Needed_things(commands.Cog):
         await ctx.send(embed=embed_obj)
 
 
-    @commands.command(aliases=["vote"])
-    async def vote_cmd(self, ctx, countdown: typing.Optional[int] = 30, *,args):
+    @commands.command()
+    async def vote(self, ctx, countdown: typing.Optional[int] = 30, *,args):
         embed = discord.Embed(
             colour = discord.Colour.gold()
         )
@@ -158,8 +158,8 @@ class Needed_things(commands.Cog):
             await ctx.send("Usage:\npy/ Vote 15(optional) argument 1,argument 2(required)")
         else:
             raise error
-    @commands.command(aliases=["quote"])
-    async def quote_cmd(self,ctx):
+    @commands.command()
+    async def quote(self,ctx):
         async with aiohttp.ClientSession() as cs:
             async with cs.get("https://zenquotes.io/api/random") as r:
                 res = await r.json(content_type='text/plain') 
@@ -169,8 +169,8 @@ class Needed_things(commands.Cog):
                 embed_obj.title=quote
                 embed_obj.set_footer(text=f"Author:{author}")
                 await ctx.send(embed=embed_obj)
-    @commands.command(aliases=["anilist","aniinfo","animeinfo"])
-    async def mal_cmd(self,ctx,type,*,name):
+    @commands.command(aliases=["aniinfo","animeinfo"])
+    async def anilist(self,ctx,type,*,name):
         if type.lower()=="anime":
             query = '''
             query ($id: Int, $page: Int, $perPage: Int, $search: String) {
@@ -330,8 +330,8 @@ class Needed_things(commands.Cog):
                     await ctx.send(description)
         # else:
         #     await ctx.send(f"Unknown option:`{option}`.\nUsage: `pi anilist <anime/manga> <name of anime/manga>`")
-    @commands.command(aliases=["youtube","youtubesearch","ytsearch"])
-    async def ytsearch_cmd(self,ctx,*,name):
+    @commands.command(aliases=["youtube","youtubesearch"])
+    async def ytsearch(self,ctx,*,name):
         name_1=name.split()
         search_keyword=""
         for words in name_1:
@@ -343,14 +343,25 @@ class Needed_things(commands.Cog):
                 link=items[0]['id']['videoId']
                 await ctx.send(f"https://youtube.com/watch?v={link}")
                 cs.close()
-    @commands.command(aliases=["bored"])
-    async def bored_cmd(self,ctx):
+    @commands.command()
+    async def bored(self,ctx):
         list_random=["education", "recreational", "social", "diy", "charity", "cooking", "relaxation", "music", "busywork"]
         async with aiohttp.ClientSession() as cs:
             async with cs.get(f"http://www.boredapi.com/api/activity/?type={random.choice(list_random)}") as response:
                 responsed=await response.json()
                 await ctx.send(responsed['activity'])
                 cs.close()
+    @commands.command()
+    async def tweet(self, ctx, username: str, *, message: str):
+        async with aiohttp.ClientSession() as cs:
+            async with cs.get(f"https://nekobot.xyz/api/imagegen?type=tweet&username={username}&text={message}") as response:
+                responsed = await response.json()
+                await ctx.send(responsed['message'])
+                cs.close()
+    @tweet.error
+    async def tweet_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(f"Usage:\npy/tweet <username> <text>")
 
 def setup(client):
     client.add_cog(Needed_things(client))

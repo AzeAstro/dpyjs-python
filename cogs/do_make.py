@@ -10,13 +10,13 @@ class Do_make(commands.Cog):
     def __init__(self, client):
         self.client=client
         
-    @commands.command(aliases=["do","Do"])
-    async def do_cmd(self,ctx,*,job):
+    @commands.command()
+    async def do(self,ctx,*,job):
         answer=random.choice(answers)
         await ctx.send(answer)
 
-    @commands.command(aliases=["make"])
-    async def make_cmd(self,ctx,*,job):
+    @commands.command()
+    async def make(self,ctx,*,job):
         answer=random.choice(answers)
         await ctx.send(answer)
 

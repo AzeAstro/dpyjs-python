@@ -11,8 +11,8 @@ class Misc(commands.Cog):
 		self.client = client
 
 
-	@commands.command(aliases=["osu","osuinfo"])
-	async def osu_cmd(self, ctx,option,user,mode="standart"):
+	@commands.command(aliases=["osuinfo"])
+	async def osu(self, ctx,option,user,mode="standart"):
 		if option.lower()=="user":
 			if mode.lower()=="standart":
 				async with aiohttp.ClientSession() as cs:
